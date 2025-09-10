@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "shadcn-tanstack-form",
-  "homepage": "https://acme.com",
+  "homepage": "https://michaelbrusegard.github.io/shadcn-tanstack-form",
   "items": [
     {
       "name": "form",
@@ -19,7 +19,9 @@
         "label",
         "radio-group",
         "select",
-        "textarea"
+        "textarea",
+        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/spinner.json",
+        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/input-phone.json"
       ],
       "files": [
         {
@@ -45,6 +47,12 @@
       "type": "registry:ui",
       "title": "Input Phone",
       "description": "A phone input component with country code selection.",
+      "registryDependencies": [
+        "button",
+        "command",
+        "popover",
+        "scroll-area"
+      ],
       "files": [
         {
           "path": "registry/default/ui/input-phone.tsx",

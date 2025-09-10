@@ -4,6 +4,12 @@
   "type": "registry:ui",
   "title": "Input Phone",
   "description": "A phone input component with country code selection.",
+  "registryDependencies": [
+    "button",
+    "command",
+    "popover",
+    "scroll-area"
+  ],
   "files": [
     {
       "path": "registry/default/ui/input-phone.tsx",
