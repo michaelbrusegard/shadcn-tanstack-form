@@ -29,7 +29,6 @@ jobs:
       - name: Build Next.js static site
         run: |
           pnpm run build
-          pnpm exec next export
 
       - name: Upload static export
         uses: actions/upload-pages-artifact@v3
