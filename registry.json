@@ -40,7 +40,8 @@
         "select",
         "textarea",
         "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/spinner.json",
-        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/input-phone.json"
+        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/input-phone.json",
+        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/input-password.json"
       ],
       "files": [
         {
@@ -75,6 +76,22 @@
       "files": [
         {
           "path": "registry/default/ui/input-phone.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-password",
+      "type": "registry:ui",
+      "title": "Input Password",
+      "description": "A password input component with show/hide functionality.",
+      "registryDependencies": [
+        "button",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/input-password.tsx",
           "type": "registry:ui"
         }
       ]

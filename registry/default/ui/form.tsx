@@ -1,10 +1,10 @@
 "use client";
 
+import * as React from "react"
 import { Slot } from '@radix-ui/react-slot';
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { XIcon } from 'lucide-react';
 import { useId, useState, Fragment } from 'react';
-
 import { Button, type buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/input-otp';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-
+import { InputPassword } from '@/components/ui/input-password';
 import { type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -599,6 +599,47 @@ function OTPField({
   );
 }
 
+type PasswordFieldProps = Omit<
+  React.ComponentProps<typeof InputPassword>,
+  'value' | 'onChange' | 'onBlur'
+> & {
+  label: string;
+  labelVisible?: boolean;
+  labelSibling?: React.ReactNode;
+  fieldSuffix?: React.ReactNode;
+  description?: string;
+};
+
+function PasswordField({
+  className,
+  label,
+  labelVisible,
+  labelSibling,
+  fieldSuffix,
+  description,
+  ...props
+}: PasswordFieldProps) {
+  const field = useFieldContext<string>();
+
+  return (
+    <BaseField
+      label={label}
+      labelVisible={labelVisible}
+      labelSibling={labelSibling}
+      fieldSuffix={fieldSuffix}
+      className={className}
+      description={description}
+    >
+      <InputPassword
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        {...props}
+      />
+    </BaseField>
+  );
+}
+
 type SubmitButtonProps = Omit<React.ComponentProps<typeof Button>, 'type'> &
   VariantProps<typeof buttonVariants> & {
     loading?: boolean;
@@ -647,7 +688,7 @@ const { useAppForm } = createFormHook({
     RadioGroupField,
     CheckboxField,
     PhoneField,
-    // PasswordField,
+    PasswordField,
     // DateField,
     OTPField,
   },

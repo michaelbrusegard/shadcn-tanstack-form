@@ -1,5 +1,4 @@
 import { Loader2Icon, type LucideProps } from 'lucide-react';
-
 import { cva, type VariantProps } from "class-variance-authority"
 
 const spinnerVariants = cva('text-muted-foreground animate-spin',

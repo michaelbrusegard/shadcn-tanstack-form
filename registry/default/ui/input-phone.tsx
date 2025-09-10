@@ -1,9 +1,11 @@
+"use client";
+
+import * as React from "react"
+import * as RPNInput from 'react-phone-number-input';
 import { CheckIcon, ChevronsUpDown } from 'lucide-react';
 import { useCallback } from 'react';
-import * as RPNInput from 'react-phone-number-input';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
-
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -20,7 +22,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 import { cn } from '@/lib/utils';
 
 type InputPhoneProps = Omit<

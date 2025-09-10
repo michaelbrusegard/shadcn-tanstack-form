@@ -20,6 +20,7 @@ const formSchema = z.object({
   phoneField: z.string().refine(isValidPhoneNumber, 'Invalid phone number'),
   fieldProps: z.string(),
   otpField: z.string().min(8, 'OTP must be at least 8 characters.').max(8, 'OTP must be at most 8 characters.'),
+  passwordField: z.string().min(6, 'Password must be at least 6 characters.'),
 });
 
 function ExampleForm() {
@@ -38,6 +39,7 @@ function ExampleForm() {
       phoneField: '',
       fieldProps: '',
       otpField: '',
+      passwordField: '',
     },
   });
 
@@ -136,6 +138,14 @@ function ExampleForm() {
               containerClassName='justify-center'
               pasteTransformer={(pasted) => pasted.replaceAll('-', '')}
               pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            />
+          )}
+        </form.AppField>
+        <form.AppField name='passwordField'>
+          {(field) => (
+            <field.PasswordField
+              label='Password field example'
+              placeholder='********'
             />
           )}
         </form.AppField>
