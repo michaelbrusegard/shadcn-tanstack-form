@@ -3,7 +3,7 @@
 import { Slot } from '@radix-ui/react-slot';
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { XIcon } from 'lucide-react';
-import { useId, useState } from 'react';
+import { useId, useState, Fragment } from 'react';
 
 import { Button, type buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -18,6 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -29,7 +35,8 @@ const { fieldContext, useFieldContext, formContext, useFormContext } =
 
 type BaseFieldProps = {
   className?: string;
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   description?: string;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
@@ -39,6 +46,7 @@ type BaseFieldProps = {
 function BaseField({
   className,
   label,
+  labelVisible = true,
   labelSibling,
   fieldSuffix,
   description,
@@ -47,17 +55,19 @@ function BaseField({
   const field = useFieldContext();
   const id = useId();
 
-  const labelElement = (
-    <Label
-      className={cn(
-        'mb-2 block',
-        field.state.meta.errors.length > 0 && 'text-destructive',
-      )}
-      htmlFor={`${id}-form-item`}
-    >
-      {label}
-    </Label>
-  );
+  const labelElement =
+    label && label.length > 0 && labelVisible ? (
+      <Label
+        className={cn(
+          'mb-2 block',
+          field.state.meta.errors.length > 0 && 'text-destructive',
+          !labelVisible && 'sr-only',
+        )}
+        htmlFor={`${id}-form-item`}
+      >
+        {label}
+      </Label>
+    ) : null;
 
   return (
     <div className={cn('relative space-y-2', className)}>
@@ -123,7 +133,8 @@ type TextFieldProps = Omit<
   React.ComponentProps<typeof Input>,
   'type' | 'value' | 'onChange' | 'onBlur'
 > & {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
   description?: string;
@@ -132,6 +143,7 @@ type TextFieldProps = Omit<
 function TextField({
   className,
   label,
+  labelVisible,
   labelSibling,
   fieldSuffix,
   description,
@@ -142,6 +154,7 @@ function TextField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -162,7 +175,8 @@ type NumberFieldProps = Omit<
   React.ComponentProps<typeof Input>,
   'type' | 'value' | 'onChange' | 'onBlur'
 > & {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
   description?: string;
@@ -172,6 +186,7 @@ type NumberFieldProps = Omit<
 function NumberField({
   className,
   label,
+  labelVisible,
   labelSibling,
   fieldSuffix,
   description,
@@ -240,6 +255,7 @@ function NumberField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -261,7 +277,8 @@ type TextAreaFieldProps = Omit<
   React.ComponentProps<typeof Textarea>,
   'value' | 'onChange' | 'onBlur'
 > & {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
   description?: string;
@@ -270,6 +287,7 @@ type TextAreaFieldProps = Omit<
 function TextAreaField({
   className,
   label,
+  labelVisible,
   labelSibling,
   fieldSuffix,
   description,
@@ -280,6 +298,7 @@ function TextAreaField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -301,7 +320,8 @@ type SelectOption = {
 };
 
 type SelectFieldProps = {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   className?: string;
   placeholder?: string;
   options: SelectOption[];
@@ -313,6 +333,7 @@ type SelectFieldProps = {
 
 function SelectField({
   label,
+  labelVisible,
   className,
   placeholder = 'Select an option',
   options,
@@ -326,6 +347,7 @@ function SelectField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -369,7 +391,8 @@ type RadioOption = {
 };
 
 type RadioGroupFieldProps = {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   className?: string;
   options: RadioOption[];
   labelSibling?: React.ReactNode;
@@ -379,6 +402,7 @@ type RadioGroupFieldProps = {
 
 function RadioGroupField({
   label,
+  labelVisible,
   className,
   options,
   labelSibling,
@@ -390,6 +414,7 @@ function RadioGroupField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -415,7 +440,8 @@ type CheckboxFieldProps = Omit<
   React.ComponentProps<typeof Checkbox>,
   'checked' | 'onCheckedChange' | 'onBlur'
 > & {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
   description?: string;
@@ -424,6 +450,7 @@ type CheckboxFieldProps = Omit<
 function CheckboxField({
   className,
   label,
+  labelVisible,
   labelSibling,
   fieldSuffix,
   description,
@@ -434,6 +461,7 @@ function CheckboxField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       labelSibling={labelSibling}
       fieldSuffix={fieldSuffix}
       className={className}
@@ -454,7 +482,8 @@ type PhoneFieldProps = Omit<
   React.ComponentProps<typeof InputPhone>,
   'value' | 'onChange' | 'onBlur'
 > & {
-  label?: string;
+  label: string;
+  labelVisible?: boolean;
   labelSibling?: React.ReactNode;
   fieldSuffix?: React.ReactNode;
   description?: string;
@@ -463,6 +492,7 @@ type PhoneFieldProps = Omit<
 function PhoneField({
   className,
   label,
+  labelVisible,
   fieldSuffix,
   labelSibling,
   description,
@@ -473,6 +503,7 @@ function PhoneField({
   return (
     <BaseField
       label={label}
+      labelVisible={labelVisible}
       fieldSuffix={fieldSuffix}
       labelSibling={labelSibling}
       className={className}
@@ -484,6 +515,86 @@ function PhoneField({
         onBlur={field.handleBlur}
         {...props}
       />
+    </BaseField>
+  );
+}
+
+
+type OTPFieldProps = Omit<
+  React.ComponentPropsWithoutRef<typeof InputOTP>,
+  'value' | 'onChange' | 'onBlur' | 'maxLength' | 'render'
+> & {
+  label: string;
+  labelVisible?: boolean;
+  labelSibling?: React.ReactNode;
+  fieldSuffix?: React.ReactNode;
+  slots?: number;
+  groups?: number[];
+  description?: string;
+};
+
+function OTPField({
+  className,
+  label,
+  labelVisible,
+  labelSibling,
+  fieldSuffix,
+  slots = 6,
+  groups = [],
+  description,
+  ...props
+}: OTPFieldProps) {
+  const field = useFieldContext<string>();
+
+  const renderSlots = () => {
+    if (groups.length === 0) {
+      return (
+        <InputOTPGroup>
+          {Array.from({ length: slots }).map((_, index) => (
+            <InputOTPSlot key={`slot-${field.name}-${index}`} index={index} />
+          ))}
+        </InputOTPGroup>
+      );
+    }
+
+    return groups.map((groupIndex, groupSize) => (
+      <Fragment key={`group-${field.name}-${groupIndex}`}>
+        {groupIndex > 0 && <InputOTPSeparator />}
+        <InputOTPGroup>
+          {Array.from({ length: groupSize }).map((_, slotIndex) => {
+            const globalIndex =
+              groups.slice(0, groupIndex).reduce((sum, size) => sum + size, 0) +
+              slotIndex;
+            return (
+              <InputOTPSlot
+                key={`slot-${field.name}-${globalIndex}`}
+                index={globalIndex}
+              />
+            );
+          })}
+        </InputOTPGroup>
+      </Fragment>
+    ));
+  };
+
+  return (
+    <BaseField
+      label={label}
+      labelVisible={labelVisible}
+      labelSibling={labelSibling}
+      fieldSuffix={fieldSuffix}
+      className={className}
+      description={description}
+    >
+      <InputOTP
+        value={field.state.value}
+        onChange={(value) => field.handleChange(value)}
+        onBlur={field.handleBlur}
+        maxLength={slots}
+        {...props}
+      >
+        {renderSlots()}
+      </InputOTP>
     </BaseField>
   );
 }
@@ -536,6 +647,9 @@ const { useAppForm } = createFormHook({
     RadioGroupField,
     CheckboxField,
     PhoneField,
+    // PasswordField,
+    // DateField,
+    OTPField,
   },
   formComponents: {
     SubmitButton,

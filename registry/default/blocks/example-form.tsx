@@ -1,9 +1,11 @@
 "use client";
 
 import { revalidateLogic } from '@tanstack/react-form';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { z } from 'zod';
 import { useAppForm } from '@/components/ui/form';
+
 
 const formSchema = z.object({
   textField: z.string().min(2, 'Text field must be at least 2 characters.'),
@@ -17,6 +19,7 @@ const formSchema = z.object({
   }),
   phoneField: z.string().refine(isValidPhoneNumber, 'Invalid phone number'),
   fieldProps: z.string(),
+  otpField: z.string().min(8, 'OTP must be at least 8 characters.').max(8, 'OTP must be at most 8 characters.'),
 });
 
 function ExampleForm() {
@@ -34,6 +37,7 @@ function ExampleForm() {
       checkboxField: false,
       phoneField: '',
       fieldProps: '',
+      otpField: '',
     },
   });
 
@@ -120,6 +124,18 @@ function ExampleForm() {
             <field.PhoneField
               label='Phone field example'
               placeholder='123 45 678'
+            />
+          )}
+        </form.AppField>
+        <form.AppField name='otpField'>
+          {(field) => (
+            <field.OTPField
+              label='One time password (OTP) field example'
+              slots={8}
+              groups={[4, 4]}
+              containerClassName='justify-center'
+              pasteTransformer={(pasted) => pasted.replaceAll('-', '')}
+              pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
             />
           )}
         </form.AppField>
