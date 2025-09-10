@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "A spinner component for loading states.",
+  "files": [
+    {
+      "path": "registry/default/ui/spinner.tsx",
+      "content": "import { Loader2Icon, type LucideProps } from 'lucide-react';\n\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nconst spinnerVariants = cva('text-muted-foreground animate-spin',\n  {\n    variants: {\n      size: {\n        default: 'h-6 w-6',\n        sm: 'h-4 w-4',\n        lg: 'h-8 w-8',\n        xl: 'h-10 w-10',\n        none: '',\n      },\n    },\n    defaultVariants: {\n      size: 'default',\n    },\n  });\n\nfunction Spinner({\n  className,\n  size,\n  ...props\n}: LucideProps & VariantProps<typeof spinnerVariants>) {\n  return (\n    <Loader2Icon className={spinnerVariants({ size, className })} {...props} />\n  );\n}\n\nexport { Spinner };\n",
+      "type": "registry:ui"
+    }
+  ]
+}
