@@ -7,7 +7,7 @@ import { Button, type buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PhoneInput } from '@/components/ui/input-phone';
+import { InputPhone } from '@/components/ui/input-phone';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
@@ -449,7 +449,7 @@ function CheckboxField({
 }
 
 type PhoneFieldProps = Omit<
-  React.ComponentProps<typeof PhoneInput>,
+  React.ComponentProps<typeof InputPhone>,
   'value' | 'onChange' | 'onBlur'
 > & {
   label?: string;
@@ -476,7 +476,7 @@ function PhoneField({
       className={className}
       description={description}
     >
-      <PhoneInput
+      <InputPhone
         value={field.state.value}
         onChange={(value) => field.handleChange(value)}
         onBlur={field.handleBlur}
