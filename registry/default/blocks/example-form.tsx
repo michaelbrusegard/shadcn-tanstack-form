@@ -9,9 +9,9 @@ const formSchema = z.object({
 function ExampleForm() {
   const form = useAppForm({
     validationLogic: revalidateLogic(),
-    validators: {
-      onDynamic: formSchema,
-    },
+    // validators: {
+    //   onDynamic: formSchema,
+    // },
     defaultValues: {
       name: '',
       email: '',
