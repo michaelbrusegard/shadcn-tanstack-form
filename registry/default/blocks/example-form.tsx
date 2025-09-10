@@ -1,143 +1,133 @@
+"use client";
+
 import { revalidateLogic } from '@tanstack/react-form';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { z } from 'zod';
 import { useAppForm } from '@/components/ui/form';
 
 const formSchema = z.object({
+  textField: z.string().min(2, 'Text field must be at least 2 characters.'),
+  numberField: z
+    .number(),
+  textAreaField: z.string().min(10, 'Textarea must be at least 10 characters.'),
+  selectField: z.enum(['apple', 'orange', 'peach', 'melon'], { required_error: 'Please select an option.' }),
+  radioGroupField: z.enum(['fiat', 'ferrari', 'astonMartin', 'mercedes'], { required_error: 'Please select a car.' }),
+  checkboxField: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the checkbox.'
+  }),
+  phoneField: z.string().refine(isValidPhoneNumber, 'Invalid phone number'),
+  fieldProps: z.string(),
 });
 
 function ExampleForm() {
   const form = useAppForm({
     validationLogic: revalidateLogic(),
-    // validators: {
-    //   onDynamic: formSchema,
-    // },
+    validators: {
+      onDynamic: formSchema,
+    },
     defaultValues: {
-      name: '',
-      email: '',
-      phoneNumber: '',
-      instagramHandle: '',
-      has3dPrinter: false,
-      hasSolderingEquipment: false,
-      whyDoYouWantToBeATester: '',
-      howDidYouHearAboutUs: '',
-      acceptRecievingEmail: false,
-      website: '',
-      humanCheck: '',
+      textField: '',
+      numberField: NaN,
+      textAreaField: '',
+      selectField: '',
+      radioGroupField: '',
+      checkboxField: false,
+      phoneField: '',
+      fieldProps: '',
     },
   });
 
   return (
     <form
-      className='relative space-y-8'
+      className='relative space-y-8 my-8'
       onSubmit={async (e) => {
         e.preventDefault();
         await form.handleSubmit();
       }}
     >
       <form.AppForm>
-        <form.AppField name='name'>
+        <form.AppField name='textField'>
           {(field) => (
             <field.TextField
-              label='Name'
-              placeholder='Your name'
-              autoComplete='name'
+              label='Text field example'
+              placeholder='This is some placeholder text'
             />
           )}
         </form.AppField>
-        <form.AppField name='email'>
+        <form.AppField name='fieldProps'>
           {(field) => (
             <field.TextField
-              label='Email'
-              placeholder='you@email.com'
-              autoComplete='email'
+              label='Field props example'
+              placeholder='This is some placeholder text'
+              description='This is some description text and can be added to most fields with a prop.'
+              fieldSuffix=<span className='text-xs ml-2'>A ReactNode field suffix prop</span>
+              labelSibling=<span className='text-xs ml-2'>A ReactNode label sibling prop</span>
             />
           )}
         </form.AppField>
-        <form.AppField name='phoneNumber'>
+        <form.AppField name='numberField'>
           {(field) => (
-            <field.PhoneField
-              label='Phone Number'
-              placeholder='+1234567890'
-              autoComplete='tel'
+            <field.NumberField
+              label='Number field example'
+              placeholder='12345'
             />
           )}
         </form.AppField>
-        <form.AppField name='instagramHandle'>
-          {(field) => (
-            <field.TextField
-              label='Instagram Handle'
-              placeholder='@yourhandle'
-            />
-          )}
-        </form.AppField>
-        <form.AppField name='has3dPrinter'>
-          {(field) => (
-            <field.CheckboxField label='Do you have access to a 3D printer?' />
-          )}
-        </form.AppField>
-        <form.AppField name='hasSolderingEquipment'>
-          {(field) => (
-            <field.CheckboxField label='Do you have access to soldering equipment?' />
-          )}
-        </form.AppField>
-        <form.AppField name='whyDoYouWantToBeATester'>
+        <form.AppField name='textAreaField'>
           {(field) => (
             <field.TextAreaField
-              label='Why do you want to be a tester?'
-              placeholder='Let us know why you are interested'
+              label='Textarea field example'
+              placeholder='here you can write a longer text'
             />
           )}
         </form.AppField>
-        <form.AppField name='howDidYouHearAboutUs'>
+        <form.AppField name='selectField'>
           {(field) => (
             <field.SelectField
-              label='How did you hear about us?'
+              label='Select field example'
+              placeholder='Select something'
               options={[
-                { value: 'tiktok', label: 'TikTok' },
-                { value: 'instagram', label: 'Instagram' },
-                { value: 'youtube', label: 'YouTube' },
-                { value: 'linkedin', label: 'LinkedIn' },
-                { value: 'email', label: 'Email' },
-                { value: 'friend', label: 'Friend' },
-                { value: 'other', label: 'Other' },
+                { value: 'apple', label: 'Apple' },
+                { value: 'orange', label: 'Orange' },
+                { value: 'peach', label: 'Peach' },
+                { value: 'melon', label: 'Melon' },
               ]}
             />
           )}
         </form.AppField>
-        <form.AppField name='acceptRecievingEmail'>
+        <form.AppField name='radioGroupField'>
           {(field) => (
-            <field.CheckboxField label='I accept receiving emails about my application' />
-          )}
-        </form.AppField>
-        <form.AppField name='website'>
-          {(field) => (
-            <field.TextField
-              className='hidden'
-              tabIndex={-1}
-              autoComplete='off'
+            <field.RadioGroupField
+              label='Radio group field example'
+              options={[
+                { value: 'fiat', label: 'Fiat' },
+                { value: 'ferrari', label: 'Ferrari' },
+                { value: 'astonMartin', label: 'Aston Martin' },
+                { value: 'mercedes', label: 'Mercedes' },
+              ]}
             />
           )}
         </form.AppField>
-        <div className='flex flex-col gap-4 sm:flex-row sm:items-end'>
-          <div className='w-full flex-1'>
-            <form.AppField name='humanCheck'>
-              {(field) => (
-                <field.TextField
-                  label="To prove you’re human, type the magic word: 'fish' 🐟"
-                  placeholder="Type 'fish'"
-                />
-              )}
-            </form.AppField>
-          </div>
-          <div className='w-full sm:w-auto'>
-            <form.SubmitButton
-              className='mb-2 w-full min-w-32 sm:w-auto'
-            >
-              Submit
-            </form.SubmitButton>
-          </div>
-        </div>
+        <form.AppField name='checkboxField'>
+          {(field) => (
+            <field.CheckboxField
+              label='Checkbox field example'
+            />
+          )}
+        </form.AppField>
+        <form.AppField name='phoneField'>
+          {(field) => (
+            <field.PhoneField
+              label='Phone field example'
+              placeholder='123 45 678'
+            />
+          )}
+        </form.AppField>
+        <form.SubmitButton
+          className='mb-2 w-full min-w-32 sm:w-auto'
+        >
+          Submit Button
+        </form.SubmitButton>
       </form.AppForm>
     </form>
   );

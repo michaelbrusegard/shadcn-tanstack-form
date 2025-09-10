@@ -1,4 +1,4 @@
-// import { ExampleForm } from "@/registry/new-york/blocks/example-form"
+import { ExampleForm } from "@/registry/default/blocks/example-form"
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
       <main className="flex flex-col flex-1 gap-8">
         <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
           <div className="flex items-center justify-center min-h-[500px] relative">
-            {/* <ExampleForm /> */}
+            <ExampleForm />
           </div>
         </div>
       </main>

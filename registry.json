@@ -4,6 +4,25 @@
   "homepage": "https://michaelbrusegard.github.io/shadcn-tanstack-form",
   "items": [
     {
+      "name": "example-form",
+      "type": "registry:block",
+      "title": "Shadcn Tanstack Form Example",
+      "description": "A form component example using Tanstack Form with shadcn UI components.",
+      "dependencies": [
+        "libphonenumber-js",
+        "zod"
+      ],
+      "registryDependencies": [
+        "https://michaelbrusegard.github.io/shadcn-tanstack-form/r/form.json"
+      ],
+      "files": [
+        {
+          "path": "registry/default/blocks/example-form.tsx",
+          "type": "registry:block"
+        }
+      ]
+    },
+    {
       "name": "form",
       "type": "registry:ui",
       "title": "Shadcn Tanstack Form",
