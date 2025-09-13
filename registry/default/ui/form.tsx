@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
+import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 
 const { fieldContext, useFieldContext, formContext, useFormContext } =
@@ -518,6 +519,79 @@ function CheckboxField({
   )
 }
 
+type SwitchFieldProps = Omit<
+  React.ComponentProps<typeof Switch>,
+  "checked" | "onCheckedChange" | "onBlur"
+> & {
+  label: string
+  labelVisible?: boolean
+  labelSibling?: React.ReactNode
+  fieldSuffix?: React.ReactNode
+  description?: string
+}
+
+function SwitchField({
+  className,
+  label,
+  labelVisible = true,
+  description,
+  ...props
+}: SwitchFieldProps) {
+  const field = useFieldContext<boolean>()
+  const id = useId()
+
+  return (
+    <div className={cn("relative space-y-2", className)}>
+      <div className="flex items-center space-x-2">
+        <Switch
+          id={`${id}-form-item`}
+          checked={field.state.value}
+          onCheckedChange={() => field.handleChange(!field.state.value)}
+          onBlur={field.handleBlur}
+          aria-describedby={
+            !(field.state.meta.errors.length > 0)
+              ? `${id}-form-item-description`
+              : `${id}-form-item-description ${id}-form-item-message`
+          }
+          aria-invalid={!!(field.state.meta.errors.length > 0)}
+          className="cursor-pointer"
+          {...props}
+        />
+        {label && labelVisible && (
+          <Label
+            className={cn(
+              "block",
+              field.state.meta.errors.length > 0 && "text-destructive",
+              !labelVisible && "sr-only",
+            )}
+            htmlFor={`${id}-form-item`}
+          >
+            {label}
+          </Label>
+        )}
+      </div>
+      {description && (
+        <p
+          id={`${id}-form-item-description`}
+          className={cn("text-muted-foreground text-sm", className)}
+        >
+          {description}
+        </p>
+      )}
+      <p
+        id={`${id}-form-item-message`}
+        className={cn(
+          "text-destructive absolute -translate-y-2 text-[0.8rem] font-medium",
+          className,
+        )}
+      >
+        {field.state.meta.errors.length > 0 &&
+          (field.state.meta.errors[0] as { message: string }).message}
+      </p>
+    </div>
+  )
+}
+
 type PhoneFieldProps = Omit<
   React.ComponentProps<typeof InputPhone>,
   "value" | "onChange" | "onBlur"
@@ -726,6 +800,7 @@ const { useAppForm } = createFormHook({
     SelectField,
     RadioGroupField,
     CheckboxField,
+    SwitchField,
     PhoneField,
     PasswordField,
     // DateField,

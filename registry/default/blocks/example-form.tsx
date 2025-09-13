@@ -28,6 +28,7 @@ const formSchema = z.object({
   checkboxField: z.boolean().refine((val) => val === true, {
     message: "You must accept the checkbox.",
   }),
+  switchField: z.boolean(),
   phoneField: z.string().refine(isValidPhoneNumber, "Invalid phone number"),
   fieldProps: z.string(),
   otpField: z
@@ -50,6 +51,7 @@ function ExampleForm() {
       selectField: "",
       radioGroupField: "",
       checkboxField: false,
+      switchField: false,
       phoneField: "",
       fieldProps: "",
       otpField: "",
@@ -134,6 +136,9 @@ function ExampleForm() {
         </form.AppField>
         <form.AppField name="checkboxField">
           {(field) => <field.CheckboxField label="Checkbox field example" />}
+        </form.AppField>
+        <form.AppField name="switchField">
+          {(field) => <field.SwitchField label="Switch field example" />}
         </form.AppField>
         <form.AppField name="phoneField">
           {(field) => (
